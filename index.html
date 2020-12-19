@@ -38,18 +38,19 @@
     <div class="row">
       <nav class="navbar-light bg-light fixed-left p-4">
         <form class="form-group">
-          <label for="searchBox">Search for a City</label>
+          <label for="search-box">Search for a City</label>
           <input
+            id="search-box"
             class="form-control"
             type="search"
-            placeholder="Atlanta"
-            id="searchBox"
+            placeholder="City Name"
             aria-label="Search box"
+            value = "Atlanta"
           />
-          <button class="btn btn-primary fas fa-search" type="submit"></button>
+          <button id="search-button" class="btn btn-primary fas fa-search" type="submit"></button>
         </form>
         <div class="">
-          <ul class="list-unstyled">
+          <ul id="search-history" class="list-unstyled">
             <li class="">City1</li>
             <li class="">City2</li>
           </ul>
@@ -57,8 +58,8 @@
       </nav>
     </div>
     <main class="container">
-      <div class="row" id="current-weather">current</div>
-      <div class="row" id="five-day">5 day forecast</div>
+      <div id="current-weather" class="row">current</div>
+      <div id="five-day" class="row">5 day forecast</div>
     </main>
     <!-- header for app name navbar on left side contains a search for city form
       list below for history top box for current Weather Hero? bottom container

@@ -11,21 +11,39 @@ $(document).ready(function () {
 
   // JAVASCRIPT VARIABLES
   var searchedCities = ["Philadelphia"];
-  var apiKey = ""
+  var apiKey = "f432f02d81a54e742898a8a15f6316f9";
   var currentCity = "Atlanta";
 
   // FUNCTION DEFINITIONS
   // initialize search history from local storage
 
   // add new city to search history and local storage
-  function storeHistory(newCity){
+  function storeHistory(newCity) {
     searchedCities.unshift(newCity);
   }
   // ajax GET current
-  function currentWeather(){
-    var queryURL = "api.openweathermap.org/data/2.5/weather?q="+currentCity+"&appid="+apiKey;
-    console.log(queryURL);
+  function currentWeather() {
+    let queryURL =
+      "https://api.openweathermap.org/data/2.5/weather?units=imperial&q=" +
+      currentCity +
+      "&appid=" +
+      apiKey;
 
+    $.ajax({
+      url: queryURL,
+      method: "GET",
+    }).then(function (response) {
+      console.log(response);
+
+      let location = response.city;
+      let currentTemp = response.main.temp;
+      let humidity = response.main.humidity;
+      let windSpeed = response.wind.speed;
+            // let windDirection = response.wind.deg; // TODO add degrees for direction for bonus
+      let latitude = response.coord.lat;
+      let longitude = response.coord.lon;
+      // console.log($(this));
+    });
   }
   // ajax UV index
   // ajax GET 5 day
@@ -37,13 +55,12 @@ $(document).ready(function () {
 
   // EVENT LISTENERS
   // on search click
-  $("#search-button").on("click", function(event) {
+  $("#search-button").on("click", function (event) {
     event.preventDefault();
     newCity = searchBoxEl.val();
     storeHistory(newCity);
-    currentCity = newCity
+    currentCity = newCity;
     currentWeather();
- 
   });
   // on search history click with event delegation
 

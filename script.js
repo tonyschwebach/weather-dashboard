@@ -43,10 +43,28 @@ $(document).ready(function () {
       let latitude = response.coord.lat;
       let longitude = response.coord.lon;
       // console.log($(this));
+      weather(latitude,longitude);
     });
   }
   // ajax UV index
   // ajax GET 5 day
+  // ajax One call API
+
+  function weather(lat,lon) {
+    let queryURL =
+      "https://api.openweathermap.org/data/2.5/onecall?lat=" +
+      lat +
+      "&lon="+lon+"&exclude=minutely,hourly,alerts&appid=" +
+      apiKey;
+
+    $.ajax({
+      url: queryURL,
+      method: "GET",
+    }).then(function (response) {
+      console.log(response);
+    });
+
+  }
   // render search history
   // render current day
   // render forecast

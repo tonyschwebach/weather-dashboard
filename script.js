@@ -3,14 +3,16 @@ $(document).ready(function () {
   var searchBoxEl = $("#search-box");
   var searchButtonEl = $("#search-button");
   var searchHistoryEl = $("#search-history");
+  var locationEl = $("#selected-city");
+  var currentConditions = $("#current-conditions");
 
   var currentWeatherEl = $("#current-weather");
   var forecastEl = $("#five-day");
 
   // JAVASCRIPT VARIABLES
-  var searchHistory = ["Philadelphia"];
+  var searchHistory = [];
   var apiKey = "f432f02d81a54e742898a8a15f6316f9";
-  var selectedCity = "Atlanta";
+  var selectedCity = "";
   // var latitude = "";
   // var longitude = "";
 
@@ -25,15 +27,15 @@ $(document).ready(function () {
   // add new city to search history and local storage
   function storeHistory(newCity) {
     // if not in the list add to the end of the history array
-    if (searchHistory.indexOf(newCity) === -1){
+    if (searchHistory.indexOf(newCity) === -1) {
       searchHistory.push(newCity);
       // if on the list, move that instance to end of the array so it's first in render
-    } else{
-      let index =searchHistory.indexOf(newCity);
-      searchHistory.splice(index,1);
+    } else {
+      let index = searchHistory.indexOf(newCity);
+      searchHistory.splice(index, 1);
       searchHistory.push(newCity);
     }
-  // localStorage.setItem("storedHistory", JSON.stringify(searchHistory));
+    localStorage.setItem("storedHistory", JSON.stringify(searchHistory));
   }
   // function to get city coordinates then current weather and forecast
   function locationWeather(city) {
@@ -49,7 +51,7 @@ $(document).ready(function () {
     }).then(function (response) {
       console.log(response);
 
-      let location = response.city;
+      locationEl.text(response.name);
       let latitude = response.coord.lat;
       let longitude = response.coord.lon;
 
@@ -73,15 +75,28 @@ $(document).ready(function () {
       method: "GET",
     }).then(function (response) {
       // daily data
-      currentWeatherEl.show();
+      currentConditions.empty()
       let currentDate = Date(response.current.dt);
-      let currentTemp = response.current.temp;
-      let currentHumidity = response.current.humidity;
-      let currentWindSpeed = response.current.wind_speed;
+      let currentTemp = $("<li>").text(
+        "Temperature: " + response.current.temp + " °F"
+      );
+      let currentHumidity = $("<li>").text(
+        "Humidity: " + response.current.humidity + "%"
+      );
+      let currentWindSpeed = $("<li>").text(
+        "Wind Speed: " + response.current.wind_speed + " MPH"
+      );
       let currentWindDir = response.current.wind_deg;
-      let currentUV = response.current.uvi;
+      let currentUV = $("<li>").text("UV Index: " + response.current.uvi);
       let currentIcon = response.current.weather.icon;
       console.log(currentDate);
+      currentConditions.append(
+        currentTemp,
+        currentHumidity,
+        currentWindSpeed,
+        currentUV
+      );
+      currentWeatherEl.show();
     });
   }
 
@@ -118,7 +133,6 @@ $(document).ready(function () {
   function renderHistory() {
     searchHistoryEl.empty();
     for (let j = 0; j < searchHistory.length; j++) {
-      console.log(searchHistory[j]);
       let historyEl = $("<li>").text(searchHistory[j]);
       historyEl.addClass("searched-city"); // for event listener
       historyEl.addClass(""); // for bootstrap
@@ -132,7 +146,8 @@ $(document).ready(function () {
   // FUNCTION CALLS
   currentWeatherEl.hide();
   forecastEl.hide();
-  // initHistory();
+  initHistory();
+  renderHistory();
 
   // EVENT LISTENERS
   // on search click
@@ -145,11 +160,12 @@ $(document).ready(function () {
     renderHistory();
   });
   // on search history click with event delegation
-  searchHistoryEl.on("click",".searched-city",function(event){
-    selectedCity=$(this).text();
+  searchHistoryEl.on("click", ".searched-city", function (event) {
+    selectedCity = $(this).text();
     locationWeather(selectedCity);
-  })
-
+    storeHistory(selectedCity);
+    renderHistory();
+  });
 
   // GIVEN a weather dashboard with form inputs
   // WHEN I search for a city

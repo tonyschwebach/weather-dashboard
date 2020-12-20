@@ -35,43 +35,94 @@
       <h1>Weather Dashboard</h1>
     </header>
 
-    <!-- navbar section  -->
 
-    <div class="row">
-      <nav class="navbar-light bg-light fixed-left p-4">
-        <form class="form-group">
-          <label for="search-box">Search for a City</label>
-          <input
-            id="search-box"
-            class="form-control"
-            type="search"
-            placeholder="City Name"
-            aria-label="Search box"
-            value="Atlanta"
-          />
-          <button
-            id="search-button"
-            class="btn btn-primary fas fa-search"
-            type="submit"
-          ></button>
-        </form>
-        <div class="">
-          <ul id="search-history" class="list-unstyled"></ul>
-        </div>
-      </nav>
-    </div>
-    <main class="container">
-      <div id="current-weather" class="row">
-        <h1 id="selected-city">You are here</h1>
-        <ul id="current-conditions" class="list-unstyled">
-          <!-- <li id="current-temp">Temperature:</li>
-          <li id="current-humidity">Humidity:</li>
-          <li id="current-wind">Wind Speed:</li>
-          <li id="uvindex">UV Index:</li> -->
-        </ul>
+    <div class="container-fluid">
+      <div class="row">
+        <!-- navbar section  -->
+        <nav class="navbar-light bg-light p-3 col-3">
+          <h5>Search for a City:</h5>
+          <form class="form-inline">
+            <input
+              id="search-box"
+              class="form-control"
+              type="search"
+              placeholder="City Name"
+              aria-label="Search box"
+              value="Atlanta"
+            />
+            <button
+              id="search-button"
+              class="btn btn-primary"
+              type="submit"
+            ><i class="fas fa-search"></i></button>
+          </form>
+          <div class="card mt-3">
+            <ul id="search-history" class="list-group list-group-flush"></ul>
+          </div>
+        </nav>
+        <main class="col-9">
+          <div id="current-weather">
+            <h3 id="selected-city">City Name</h3>
+            <ul id="current-conditions" class="list-unstyled"></ul>
+          </div>
+          <div id="five-day">
+            <h3>5-Day Forecast:</h3>
+            <div class="row justify-content-around">
+
+
+              <div class="card col-2" >
+                <div class="card-body">
+                  <h5 class="card-title">Card title</h5>
+                  <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                  <a href="#" class="card-link">Card link</a>
+                  <a href="#" class="card-link">Another link</a>
+                </div>
+              </div>
+
+              <div class="card col-2" >
+                <div class="card-body">
+                  <h5 class="card-title">Card title</h5>
+                  <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                  <a href="#" class="card-link">Card link</a>
+                  <a href="#" class="card-link">Another link</a>
+                </div>
+              </div>
+              <div class="card col-2" >
+                <div class="card-body">
+                  <h5 class="card-title">Card title</h5>
+                  <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                  <a href="#" class="card-link">Card link</a>
+                  <a href="#" class="card-link">Another link</a>
+                </div>
+              </div>
+              <div class="card col-2" >
+                <div class="card-body">
+                  <h5 class="card-title">Card title</h5>
+                  <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                  <a href="#" class="card-link">Card link</a>
+                  <a href="#" class="card-link">Another link</a>
+                </div>
+              </div>
+              <div class="card col-2" >
+                <div class="card-body">
+                  <h5 class="card-title">Card title</h5>
+                  <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                  <a href="#" class="card-link">Card link</a>
+                  <a href="#" class="card-link">Another link</a>
+                </div>
+              </div>
+            </div>
+            
+            
+          </div>
+        </main>
       </div>
-      <div id="five-day" class="row">5 day forecast</div>
-    </main>
+    </div>
     <!-- header for app name navbar on left side contains a search for city form
       list below for history top box for current Weather Hero? bottom container
       for 5 day forecast cards -->

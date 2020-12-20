@@ -135,7 +135,7 @@ $(document).ready(function () {
     for (let j = 0; j < searchHistory.length; j++) {
       let historyEl = $("<li>").text(searchHistory[j]);
       historyEl.addClass("searched-city"); // for event listener
-      historyEl.addClass(""); // for bootstrap
+      historyEl.addClass("list-group-item"); // for bootstrap
       searchHistoryEl.prepend(historyEl);
     }
   }

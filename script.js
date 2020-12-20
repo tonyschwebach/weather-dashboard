@@ -80,6 +80,15 @@ $(document).ready(function () {
       let currentDate = $("<h3>").text("(" + dateString + ")");
       locationEl.append(currentDate);
 
+      //set icon
+      let currentIcon = $("<img>").attr(
+        "src",
+        iconURL(response.current.weather[0].icon)
+      );
+      currentIcon.attr("alt", response.current.weather[0].description);
+      locationEl.append(currentIcon);
+
+      // get weather readings
       let currentTemp = $("<li>").text(
         "Temperature: " + Math.round(response.current.temp) + " °F"
       );
@@ -89,20 +98,17 @@ $(document).ready(function () {
       let currentWindSpeed = $("<li>").text(
         "Wind Speed: " + Math.round(response.current.wind_speed) + " MPH"
       );
-      let currentWindDir = response.current.wind_deg;
-      let currentUV = $("<li>").text("UV Index: " + response.current.uvi);
-      let currentIcon = $("<img>").attr(
-        "src",
-        iconURL(response.current.weather[0].icon)
-      );
-      currentIcon.attr("alt", response.current.weather[0].description);
+      let currentUV = $("<li>").text("UV Index: ");
+      let uvIndex = $("<span>").text(response.current.uvi);
+      uvIndex.addClass(uvRating(response.current.uvi));
+      currentUV.append(uvIndex);
+
       currentConditions.append(
         currentTemp,
         currentHumidity,
         currentWindSpeed,
         currentUV
       );
-      locationEl.append(currentIcon);
     });
   }
   // function to get forecast weather
@@ -122,8 +128,6 @@ $(document).ready(function () {
       forecastEl.empty();
 
       // 5 day forecast (daily array 0:8 is 7 day forecast)
-      // let forecastDays = response.daily;
-
       //create card for each day in the forecast
       for (let j = 1; j < 6; j++) {
         let card = $("<div>").addClass(
@@ -136,7 +140,7 @@ $(document).ready(function () {
           "src",
           iconURL(response.daily[j].weather[0].icon)
         );
-        // forecastIcon.addClass("h-auto")
+
         forecastIcon.attr("alt", response.daily[j].weather[0].description);
         let forecastTemp = $("<p>").text(
           "Temp: " + Math.round(response.daily[j].temp.max) + " °F"
@@ -165,6 +169,21 @@ $(document).ready(function () {
     return iconURL;
   }
 
+  // function to add class for UV index
+  function uvRating(uvNumber) {
+    if (uvNumber <= 2) {
+      return "uv low";
+    } else if (uvNumber <= 5) {
+      return "uv medium";
+    } else if (uvNumber <= 7) {
+      return "uv high";
+    } else if (uvNumber <= 10) {
+      return "uv very-high";
+    } else if (uvNumber > 10) {
+      return "uv extreme";
+    }
+  }
+
   // FUNCTION CALLS
   $("main").hide();
   initHistory();
@@ -182,10 +201,7 @@ $(document).ready(function () {
       renderHistory();
       $("main").show();
       searchBoxEl.val("");
-    } 
- 
-
-
+    }
   });
   // on search history click with event delegation
   searchHistoryEl.on("click", ".searched-city", function (event) {

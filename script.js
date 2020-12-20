@@ -1,6 +1,4 @@
 $(document).ready(function () {
-  console.log("hello world");
-
   // DOM VARIABLES
   var searchBoxEl = $("#search-box");
   var searchButtonEl = $("#search-button");
@@ -10,22 +8,32 @@ $(document).ready(function () {
   var forecastEl = $("#five-day");
 
   // JAVASCRIPT VARIABLES
-  var searchedCities = ["Philadelphia"];
+  var searchHistory = ["Philadelphia"];
   var apiKey = "f432f02d81a54e742898a8a15f6316f9";
-  var currentCity = "Atlanta";
+  var selectedCity = "Atlanta";
 
   // FUNCTION DEFINITIONS
   // initialize search history from local storage
+  function initHistory(){
+    let storedHistory = JSON.parse(localStorage.getItem("storedHistory"));
+    if(storedHistory){
+      searchHistory = storedHistory;
+    }
+
+  }
+
 
   // add new city to search history and local storage
   function storeHistory(newCity) {
-    searchedCities.unshift(newCity);
+    searchHistory.unshift(newCity);
+    // localStorage.setItem("storedHistory", JSON.stringify(searchHistory)); 
+
   }
   // ajax GET current
-  function currentWeather() {
+  function cityLocation(city) {
     let queryURL =
       "https://api.openweathermap.org/data/2.5/weather?units=imperial&q=" +
-      currentCity +
+      city +
       "&appid=" +
       apiKey;
 
@@ -36,60 +44,74 @@ $(document).ready(function () {
       console.log(response);
 
       let location = response.city;
-      let currentTemp = response.main.temp;
-      let humidity = response.main.humidity;
-      let windSpeed = response.wind.speed;
-            // let windDirection = response.wind.deg; // TODO add degrees for direction for bonus
       let latitude = response.coord.lat;
       let longitude = response.coord.lon;
-      // console.log($(this));
-      weather(latitude,longitude);
+
+      currentWeather(latitude, longitude);
+      forecastWeather(latitude, longitude);
     });
   }
-  // ajax UV index
-  // ajax GET 5 day
-  // ajax One call API
 
-  function weather(lat,lon) {
+  // function to get current weather data
+  function currentWeather(lat, lon) {
     let queryURL =
       "https://api.openweathermap.org/data/2.5/onecall?units=imperial&lat=" +
       lat +
-      "&lon="+lon+"&exclude=minutely,hourly,alerts&appid=" +
+      "&lon=" +
+      lon +
+      "&exclude=minutely,hourly,daily,alerts&appid=" +
       apiKey;
 
     $.ajax({
       url: queryURL,
       method: "GET",
     }).then(function (response) {
-      console.log(response);
-      
       // daily data
+      let currentDate = Date(response.current.dt);
       let currentTemp = response.current.temp;
       let currentHumidity = response.current.humidity;
       let currentWindSpeed = response.current.wind_speed;
-      let currentWindDir= response.current.wind_deg;
-      let currentUV=response.current.uvi;
+      let currentWindDir = response.current.wind_deg;
+      let currentUV = response.current.uvi;
       let currentIcon = response.current.weather.icon;
+      console.log(currentDate);
+    });
+  }
 
+  // function to get forecast weather
+  function forecastWeather(lat, lon) {
+    let queryURL =
+      "https://api.openweathermap.org/data/2.5/onecall?units=imperial&lat=" +
+      lat +
+      "&lon=" +
+      lon +
+      "&exclude=current,minutely,hourly,alerts&appid=" +
+      apiKey;
+
+    $.ajax({
+      url: queryURL,
+      method: "GET",
+    }).then(function (response) {
       // 5 day forecast (daily array 0:8 is 7 day forecast)
+      console.log(response)
       let forecastDays = response.daily;
 
-      for( let j =1; j<6; j++){
+      for (let j = 1; j < 6; j++) {
+        let forecastDate = Date(response.daily[j].dt);
         let forecastIcon = response.daily[j].weather[0].icon;
         let forestTemp = response.daily[j].temp.day;
         let forecastHumidity = response.daily[j].humidity;
-     
-
+        console.log(forecastDate);
       }
-
     });
-
   }
+
   // render search history
   // render current day
   // render forecast
 
   // FUNCTION CALLS
+  // initHistory();
 
   // EVENT LISTENERS
   // on search click
@@ -97,10 +119,14 @@ $(document).ready(function () {
     event.preventDefault();
     newCity = searchBoxEl.val();
     storeHistory(newCity);
-    currentCity = newCity;
-    currentWeather();
+    selectedCity = newCity;
+    cityLocation(selectedCity);
   });
   // on search history click with event delegation
+
+
+
+
 
   // GIVEN a weather dashboard with form inputs
   // WHEN I search for a city

@@ -49,7 +49,6 @@ $(document).ready(function () {
       url: queryURL,
       method: "GET",
     }).then(function (response) {
-    
       locationEl.append($("<h3>").text(response.name));
       let latitude = response.coord.lat;
       let longitude = response.coord.lon;
@@ -73,12 +72,12 @@ $(document).ready(function () {
       method: "GET",
     }).then(function (response) {
       // current day weather
-      currentConditions.empty()
+      currentConditions.empty();
 
       // set date
-      let dateString = new Date(response.current.dt*1000);
+      let dateString = new Date(response.current.dt * 1000);
       dateString = dateString.toLocaleDateString();
-      let currentDate = $("<h3>").text("("+dateString+")");
+      let currentDate = $("<h3>").text("(" + dateString + ")");
       locationEl.append(currentDate);
 
       let currentTemp = $("<li>").text(
@@ -92,8 +91,11 @@ $(document).ready(function () {
       );
       let currentWindDir = response.current.wind_deg;
       let currentUV = $("<li>").text("UV Index: " + response.current.uvi);
-      let currentIcon = $("<img>").attr("src",iconURL(response.current.weather[0].icon));
-      currentIcon.attr("alt",response.current.weather[0].description);
+      let currentIcon = $("<img>").attr(
+        "src",
+        iconURL(response.current.weather[0].icon)
+      );
+      currentIcon.attr("alt", response.current.weather[0].description);
       currentConditions.append(
         currentTemp,
         currentHumidity,
@@ -101,7 +103,6 @@ $(document).ready(function () {
         currentUV
       );
       locationEl.append(currentIcon);
-      
     });
   }
   // function to get forecast weather
@@ -118,27 +119,33 @@ $(document).ready(function () {
       url: queryURL,
       method: "GET",
     }).then(function (response) {
-     
-     
       forecastEl.empty();
 
       // 5 day forecast (daily array 0:8 is 7 day forecast)
       // let forecastDays = response.daily;
-      
+
       //create card for each day in the forecast
       for (let j = 1; j < 6; j++) {
-        let card = $("<div>").addClass("card col-md-2 card-body bg-primary text-white");
-        let dateString = new Date(response.daily[j].dt*1000);
+        let card = $("<div>").addClass(
+          "card col-md-2 card-body bg-primary text-white"
+        );
+        let dateString = new Date(response.daily[j].dt * 1000);
         dateString = dateString.toLocaleDateString();
         let forecastDate = $("<h5>").text(dateString);
-        let forecastIcon = $("<img>").attr("src",iconURL(response.daily[j].weather[0].icon));
+        let forecastIcon = $("<img>").attr(
+          "src",
+          iconURL(response.daily[j].weather[0].icon)
+        );
         // forecastIcon.addClass("h-auto")
-        forecastIcon.attr("alt",response.daily[j].weather[0].description);
-        let forecastTemp = $("<p>").text("Temp: "+Math.round(response.daily[j].temp.max)+" °F");
-        let forecastHumidity = $("<p>").text("Humidity: "+Math.round(response.daily[j].humidity)+" %");
+        forecastIcon.attr("alt", response.daily[j].weather[0].description);
+        let forecastTemp = $("<p>").text(
+          "Temp: " + Math.round(response.daily[j].temp.max) + " °F"
+        );
+        let forecastHumidity = $("<p>").text(
+          "Humidity: " + Math.round(response.daily[j].humidity) + " %"
+        );
         card.append(forecastDate, forecastIcon, forecastTemp, forecastHumidity);
-        forecastEl.append(card)
-  
+        forecastEl.append(card);
       }
     });
   }
@@ -153,12 +160,10 @@ $(document).ready(function () {
     }
   }
   // get icon url
-  function iconURL(iconCode){
-    var iconURL = "http://openweathermap.org/img/wn/"+iconCode+".png"
-    return iconURL 
+  function iconURL(iconCode) {
+    var iconURL = "http://openweathermap.org/img/wn/" + iconCode + ".png";
+    return iconURL;
   }
-
-
 
   // FUNCTION CALLS
   $("main").hide();
@@ -169,12 +174,18 @@ $(document).ready(function () {
   // on search click
   searchButtonEl.on("click", function (event) {
     event.preventDefault();
-    $("main").show();
-    newCity = searchBoxEl.val();
-    storeHistory(newCity);
-    selectedCity = newCity;
-    locationWeather(selectedCity);
-    renderHistory();
+    if (searchBoxEl.val()) {
+      newCity = searchBoxEl.val();
+      selectedCity = newCity;
+      locationWeather(selectedCity);
+      storeHistory(newCity);
+      renderHistory();
+      $("main").show();
+      searchBoxEl.val("");
+    } 
+ 
+
+
   });
   // on search history click with event delegation
   searchHistoryEl.on("click", ".searched-city", function (event) {

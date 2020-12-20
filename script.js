@@ -24,8 +24,16 @@ $(document).ready(function () {
   }
   // add new city to search history and local storage
   function storeHistory(newCity) {
-    searchHistory.push(newCity);
-    // localStorage.setItem("storedHistory", JSON.stringify(searchHistory));
+    // if not in the list add to the end of the history array
+    if (searchHistory.indexOf(newCity) === -1){
+      searchHistory.push(newCity);
+      // if on the list, move that instance to end of the array so it's first in render
+    } else{
+      let index =searchHistory.indexOf(newCity);
+      searchHistory.splice(index,1);
+      searchHistory.push(newCity);
+    }
+  // localStorage.setItem("storedHistory", JSON.stringify(searchHistory));
   }
   // function to get city coordinates then current weather and forecast
   function locationWeather(city) {

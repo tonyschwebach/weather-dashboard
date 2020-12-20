@@ -69,9 +69,18 @@ $(document).ready(function () {
       let currentWindSpeed = response.current.wind_speed;
       let currentWindDir= response.current.wind_deg;
       let currentUV=response.current.uvi;
+      let currentIcon = response.current.weather.icon;
 
       // 5 day forecast (daily array 0:8 is 7 day forecast)
-      let forecastDays = response.daily[1:5]
+      let forecastDays = response.daily;
+
+      for( let j =1; j<6; j++){
+        let forecastIcon = response.daily[j].weather[0].icon;
+        let forestTemp = response.daily[j].temp.day;
+        let forecastHumidity = response.daily[j].humidity;
+     
+
+      }
 
     });
 

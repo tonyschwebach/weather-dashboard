@@ -52,7 +52,7 @@ $(document).ready(function () {
 
   function weather(lat,lon) {
     let queryURL =
-      "https://api.openweathermap.org/data/2.5/onecall?lat=" +
+      "https://api.openweathermap.org/data/2.5/onecall?units=imperial&lat=" +
       lat +
       "&lon="+lon+"&exclude=minutely,hourly,alerts&appid=" +
       apiKey;
@@ -62,6 +62,17 @@ $(document).ready(function () {
       method: "GET",
     }).then(function (response) {
       console.log(response);
+      
+      // daily data
+      let currentTemp = response.current.temp;
+      let currentHumidity = response.current.humidity;
+      let currentWindSpeed = response.current.wind_speed;
+      let currentWindDir= response.current.wind_deg;
+      let currentUV=response.current.uvi;
+
+      // 5 day forecast (daily array 0:8 is 7 day forecast)
+      let forecastDays = response.daily[1:5]
+
     });
 
   }

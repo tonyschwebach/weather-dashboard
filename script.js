@@ -11,26 +11,24 @@ $(document).ready(function () {
   var searchHistory = ["Philadelphia"];
   var apiKey = "f432f02d81a54e742898a8a15f6316f9";
   var selectedCity = "Atlanta";
+  // var latitude = "";
+  // var longitude = "";
 
   // FUNCTION DEFINITIONS
   // initialize search history from local storage
-  function initHistory(){
+  function initHistory() {
     let storedHistory = JSON.parse(localStorage.getItem("storedHistory"));
-    if(storedHistory){
+    if (storedHistory) {
       searchHistory = storedHistory;
     }
-
   }
-
-
   // add new city to search history and local storage
   function storeHistory(newCity) {
-    searchHistory.unshift(newCity);
-    // localStorage.setItem("storedHistory", JSON.stringify(searchHistory)); 
-
+    searchHistory.push(newCity);
+    // localStorage.setItem("storedHistory", JSON.stringify(searchHistory));
   }
-  // ajax GET current
-  function cityLocation(city) {
+  // function to get city coordinates then current weather and forecast
+  function locationWeather(city) {
     let queryURL =
       "https://api.openweathermap.org/data/2.5/weather?units=imperial&q=" +
       city +
@@ -93,7 +91,7 @@ $(document).ready(function () {
       method: "GET",
     }).then(function (response) {
       // 5 day forecast (daily array 0:8 is 7 day forecast)
-      console.log(response)
+      console.log(response);
       let forecastDays = response.daily;
 
       for (let j = 1; j < 6; j++) {
@@ -107,6 +105,14 @@ $(document).ready(function () {
   }
 
   // render search history
+  function renderHistory() {
+    searchHistoryEl.empty();
+    for (let j = 0; j < searchHistory.length; j++) {
+      console.log(searchHistory[j]);
+      let historyEl = $("<p>").text(searchHistory[j]);
+      searchHistoryEl.prepend(historyEl);
+    }
+  }
   // render current day
   // render forecast
 
@@ -120,13 +126,10 @@ $(document).ready(function () {
     newCity = searchBoxEl.val();
     storeHistory(newCity);
     selectedCity = newCity;
-    cityLocation(selectedCity);
+    locationWeather(selectedCity);
+    renderHistory();
   });
   // on search history click with event delegation
-
-
-
-
 
   // GIVEN a weather dashboard with form inputs
   // WHEN I search for a city

@@ -65,6 +65,7 @@ $(document).ready(function () {
       method: "GET",
     }).then(function (response) {
       // daily data
+      currentWeatherEl.show();
       let currentDate = Date(response.current.dt);
       let currentTemp = response.current.temp;
       let currentHumidity = response.current.humidity;
@@ -92,6 +93,7 @@ $(document).ready(function () {
     }).then(function (response) {
       // 5 day forecast (daily array 0:8 is 7 day forecast)
       console.log(response);
+      forecastEl.show();
       let forecastDays = response.daily;
 
       for (let j = 1; j < 6; j++) {
@@ -109,19 +111,24 @@ $(document).ready(function () {
     searchHistoryEl.empty();
     for (let j = 0; j < searchHistory.length; j++) {
       console.log(searchHistory[j]);
-      let historyEl = $("<p>").text(searchHistory[j]);
+      let historyEl = $("<li>").text(searchHistory[j]);
+      historyEl.addClass("searched-city"); // for event listener
+      historyEl.addClass(""); // for bootstrap
       searchHistoryEl.prepend(historyEl);
     }
   }
   // render current day
+
   // render forecast
 
   // FUNCTION CALLS
+  currentWeatherEl.hide();
+  forecastEl.hide();
   // initHistory();
 
   // EVENT LISTENERS
   // on search click
-  $("#search-button").on("click", function (event) {
+  searchButtonEl.on("click", function (event) {
     event.preventDefault();
     newCity = searchBoxEl.val();
     storeHistory(newCity);
@@ -130,6 +137,11 @@ $(document).ready(function () {
     renderHistory();
   });
   // on search history click with event delegation
+  searchHistoryEl.on("click",".searched-city",function(event){
+    selectedCity=$(this).text();
+    locationWeather(selectedCity);
+  })
+
 
   // GIVEN a weather dashboard with form inputs
   // WHEN I search for a city

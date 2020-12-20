@@ -35,7 +35,6 @@
       <h1>Weather Dashboard</h1>
     </header>
 
-
     <div class="container-fluid">
       <div class="row">
         <!-- navbar section  -->
@@ -50,11 +49,9 @@
               aria-label="Search box"
               value="Atlanta"
             />
-            <button
-              id="search-button"
-              class="btn btn-primary"
-              type="submit"
-            ><i class="fas fa-search"></i></button>
+            <button id="search-button" class="btn btn-primary" type="submit">
+              <i class="fas fa-search"></i>
+            </button>
           </form>
           <div class="card mt-3">
             <ul id="search-history" class="list-group list-group-flush"></ul>
@@ -62,63 +59,13 @@
         </nav>
         <main class="col-9">
           <div id="current-weather">
-            <h3 id="selected-city">City Name</h3>
+            <h3 id="selected-city"></h3>
             <ul id="current-conditions" class="list-unstyled"></ul>
           </div>
-          <div id="five-day">
+
+          <div>
             <h3>5-Day Forecast:</h3>
-            <div class="row justify-content-around">
-
-
-              <div class="card col-2" >
-                <div class="card-body">
-                  <h5 class="card-title">Card title</h5>
-                  <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                  <a href="#" class="card-link">Card link</a>
-                  <a href="#" class="card-link">Another link</a>
-                </div>
-              </div>
-
-              <div class="card col-2" >
-                <div class="card-body">
-                  <h5 class="card-title">Card title</h5>
-                  <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                  <a href="#" class="card-link">Card link</a>
-                  <a href="#" class="card-link">Another link</a>
-                </div>
-              </div>
-              <div class="card col-2" >
-                <div class="card-body">
-                  <h5 class="card-title">Card title</h5>
-                  <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                  <a href="#" class="card-link">Card link</a>
-                  <a href="#" class="card-link">Another link</a>
-                </div>
-              </div>
-              <div class="card col-2" >
-                <div class="card-body">
-                  <h5 class="card-title">Card title</h5>
-                  <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                  <a href="#" class="card-link">Card link</a>
-                  <a href="#" class="card-link">Another link</a>
-                </div>
-              </div>
-              <div class="card col-2" >
-                <div class="card-body">
-                  <h5 class="card-title">Card title</h5>
-                  <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                  <a href="#" class="card-link">Card link</a>
-                  <a href="#" class="card-link">Another link</a>
-                </div>
-              </div>
-            </div>
-            
-            
+            <div id="five-day" class="row justify-content-around"></div>
           </div>
         </main>
       </div>

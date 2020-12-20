@@ -13,6 +13,7 @@ $(document).ready(function () {
   var searchHistory = [];
   var apiKey = "f432f02d81a54e742898a8a15f6316f9";
   var selectedCity = "";
+
   // var latitude = "";
   // var longitude = "";
 
@@ -49,8 +50,7 @@ $(document).ready(function () {
       url: queryURL,
       method: "GET",
     }).then(function (response) {
-      console.log(response);
-
+    
       locationEl.text(response.name);
       let latitude = response.coord.lat;
       let longitude = response.coord.lon;
@@ -59,7 +59,6 @@ $(document).ready(function () {
       forecastWeather(latitude, longitude);
     });
   }
-
   // function to get current weather data
   function currentWeather(lat, lon) {
     let queryURL =
@@ -74,32 +73,33 @@ $(document).ready(function () {
       url: queryURL,
       method: "GET",
     }).then(function (response) {
-      // daily data
+      // current day weather
       currentConditions.empty()
+      
       let currentDate = Date(response.current.dt);
       let currentTemp = $("<li>").text(
-        "Temperature: " + response.current.temp + " °F"
+        "Temperature: " + Math.round(response.current.temp) + " °F"
       );
       let currentHumidity = $("<li>").text(
-        "Humidity: " + response.current.humidity + "%"
+        "Humidity: " + Math.round(response.current.humidity) + "%"
       );
       let currentWindSpeed = $("<li>").text(
-        "Wind Speed: " + response.current.wind_speed + " MPH"
+        "Wind Speed: " + Math.round(response.current.wind_speed) + " MPH"
       );
       let currentWindDir = response.current.wind_deg;
       let currentUV = $("<li>").text("UV Index: " + response.current.uvi);
-      let currentIcon = response.current.weather.icon;
-      console.log(currentDate);
+      let currentIcon = $("<img>").attr("src",iconURL(response.current.weather[0].icon));
+      currentIcon.attr("alt",response.current.weather[0].description);
       currentConditions.append(
         currentTemp,
         currentHumidity,
         currentWindSpeed,
         currentUV
       );
-      currentWeatherEl.show();
+      locationEl.append(currentIcon);
+      
     });
   }
-
   // function to get forecast weather
   function forecastWeather(lat, lon) {
     let queryURL =
@@ -114,21 +114,27 @@ $(document).ready(function () {
       url: queryURL,
       method: "GET",
     }).then(function (response) {
-      // 5 day forecast (daily array 0:8 is 7 day forecast)
-      console.log(response);
-      forecastEl.show();
-      let forecastDays = response.daily;
+     
+     
+      forecastEl.empty();
 
+      // 5 day forecast (daily array 0:8 is 7 day forecast)
+      // let forecastDays = response.daily;
+      
+      //create card for each day in the forecast
       for (let j = 1; j < 6; j++) {
-        let forecastDate = Date(response.daily[j].dt);
-        let forecastIcon = response.daily[j].weather[0].icon;
-        let forestTemp = response.daily[j].temp.day;
-        let forecastHumidity = response.daily[j].humidity;
-        console.log(forecastDate);
+        let card = $("<div>").addClass("card col-md-2 card-body bg-primary text-white");
+        let forecastDate = $("<h5>").text(Date(response.daily[j].dt));
+        let forecastIcon = $("<img>").attr("src",iconURL(response.daily[j].weather[0].icon));
+        forecastIcon.attr("alt",response.daily[j].weather[0].description);
+        let forecastTemp = $("<p>").text("Temp: "+Math.round(response.daily[j].temp.day)+" °F");
+        let forecastHumidity = $("<p>").text("Humidity: "+Math.round(response.daily[j].humidity)+" %");
+        card.append(forecastDate, forecastIcon, forecastTemp, forecastHumidity);
+        forecastEl.append(card)
+  
       }
     });
   }
-
   // render search history
   function renderHistory() {
     searchHistoryEl.empty();
@@ -139,13 +145,16 @@ $(document).ready(function () {
       searchHistoryEl.prepend(historyEl);
     }
   }
-  // render current day
+  // get icon url
+  function iconURL(iconCode){
+    var iconURL = "http://openweathermap.org/img/wn/"+iconCode+".png"
+    return iconURL 
+  }
 
-  // render forecast
+
 
   // FUNCTION CALLS
-  currentWeatherEl.hide();
-  forecastEl.hide();
+  $("main").hide();
   initHistory();
   renderHistory();
 
@@ -153,6 +162,7 @@ $(document).ready(function () {
   // on search click
   searchButtonEl.on("click", function (event) {
     event.preventDefault();
+    $("main").show();
     newCity = searchBoxEl.val();
     storeHistory(newCity);
     selectedCity = newCity;
@@ -161,6 +171,7 @@ $(document).ready(function () {
   });
   // on search history click with event delegation
   searchHistoryEl.on("click", ".searched-city", function (event) {
+    $("main").show();
     selectedCity = $(this).text();
     locationWeather(selectedCity);
     storeHistory(selectedCity);

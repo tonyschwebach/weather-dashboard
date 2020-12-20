@@ -57,12 +57,15 @@
             <ul id="search-history" class="list-group list-group-flush"></ul>
           </div>
         </nav>
-        <main class="col-9">
-          <div id="current-weather">
-            <div id="selected-city" class=""></div>
+        <!-- main section to display current and forecast  -->
+        <main class="m-2 col-8">
+          <!-- current conditions  -->
+          <div class="card card-body">
+            <span id="selected-city" class=""></span>
             <ul id="current-conditions" class="list-unstyled"></ul>
           </div>
 
+          <!-- forecast  -->
           <div>
             <h3>5-Day Forecast:</h3>
             <div id="five-day" class="row justify-content-around"></div>
@@ -70,9 +73,6 @@
         </main>
       </div>
     </div>
-    <!-- header for app name navbar on left side contains a search for city form
-      list below for history top box for current Weather Hero? bottom container
-      for 5 day forecast cards -->
 
     <script src="./script.js" async defer></script>
   </body>

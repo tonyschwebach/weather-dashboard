@@ -5,8 +5,6 @@ $(document).ready(function () {
   var searchHistoryEl = $("#search-history");
   var locationEl = $("#selected-city");
   var currentConditions = $("#current-conditions");
-
-  var currentWeatherEl = $("#current-weather");
   var forecastEl = $("#five-day");
 
   // JAVASCRIPT VARIABLES

@@ -40,6 +40,7 @@ $(document).ready(function () {
   }
   // function to get city coordinates then current weather and forecast
   function locationWeather(city) {
+    locationEl.empty();
     let queryURL =
       "https://api.openweathermap.org/data/2.5/weather?units=imperial&q=" +
       city +
@@ -51,7 +52,7 @@ $(document).ready(function () {
       method: "GET",
     }).then(function (response) {
     
-      locationEl.text(response.name);
+      locationEl.append($("<h3>").text(response.name));
       let latitude = response.coord.lat;
       let longitude = response.coord.lon;
 
@@ -75,8 +76,13 @@ $(document).ready(function () {
     }).then(function (response) {
       // current day weather
       currentConditions.empty()
-      
-      let currentDate = Date(response.current.dt);
+
+      // set date
+      let dateString = new Date(response.current.dt*1000);
+      dateString = dateString.toLocaleDateString();
+      let currentDate = $("<h3>").text("("+dateString+")");
+      locationEl.append(currentDate);
+
       let currentTemp = $("<li>").text(
         "Temperature: " + Math.round(response.current.temp) + " °F"
       );
@@ -124,10 +130,13 @@ $(document).ready(function () {
       //create card for each day in the forecast
       for (let j = 1; j < 6; j++) {
         let card = $("<div>").addClass("card col-md-2 card-body bg-primary text-white");
-        let forecastDate = $("<h5>").text(Date(response.daily[j].dt));
+        let dateString = new Date(response.daily[j].dt*1000);
+        dateString = dateString.toLocaleDateString();
+        let forecastDate = $("<h5>").text(dateString);
         let forecastIcon = $("<img>").attr("src",iconURL(response.daily[j].weather[0].icon));
+        // forecastIcon.addClass("h-auto")
         forecastIcon.attr("alt",response.daily[j].weather[0].description);
-        let forecastTemp = $("<p>").text("Temp: "+Math.round(response.daily[j].temp.day)+" °F");
+        let forecastTemp = $("<p>").text("Temp: "+Math.round(response.daily[j].temp.max)+" °F");
         let forecastHumidity = $("<p>").text("Humidity: "+Math.round(response.daily[j].humidity)+" %");
         card.append(forecastDate, forecastIcon, forecastTemp, forecastHumidity);
         forecastEl.append(card)

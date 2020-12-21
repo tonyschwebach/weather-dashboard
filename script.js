@@ -48,14 +48,21 @@ $(document).ready(function () {
     $.ajax({
       url: queryURL,
       method: "GET",
-    }).then(function (response) {
-      locationEl.append($("<h3>").text(response.name));
-      let latitude = response.coord.lat;
-      let longitude = response.coord.lon;
+    })
+      .then(function (response) {
+        locationEl.append($("<h3>").text(response.name));
+        let latitude = response.coord.lat;
+        let longitude = response.coord.lon;
 
-      currentWeather(latitude, longitude);
-      forecastWeather(latitude, longitude);
-    });
+        currentWeather(latitude, longitude);
+        forecastWeather(latitude, longitude);
+        storeHistory(city);
+        renderHistory();
+      })
+      .fail(function () {
+        alert("City not found");
+        mostRecentLocation();
+      });
   }
   // function to get current weather data
   function currentWeather(lat, lon) {
@@ -168,7 +175,6 @@ $(document).ready(function () {
     var iconURL = "http://openweathermap.org/img/wn/" + iconCode + ".png";
     return iconURL;
   }
-
   // function to add class for UV index
   function uvRating(uvNumber) {
     if (uvNumber <= 2) {
@@ -183,11 +189,20 @@ $(document).ready(function () {
       return "uv extreme";
     }
   }
+  // function to show most recent
+  function mostRecentLocation() {
+    if (searchHistory.length > 0) {
+      selectedCity = searchHistory[searchHistory.length - 1];
+      locationWeather(selectedCity);
+      $("main").show();
+    }
+  }
 
   // FUNCTION CALLS
   $("main").hide();
   initHistory();
   renderHistory();
+  mostRecentLocation();
 
   // EVENT LISTENERS
   // on search click
@@ -197,8 +212,6 @@ $(document).ready(function () {
       newCity = searchBoxEl.val();
       selectedCity = newCity;
       locationWeather(selectedCity);
-      storeHistory(newCity);
-      renderHistory();
       $("main").show();
       searchBoxEl.val("");
     }
@@ -208,8 +221,6 @@ $(document).ready(function () {
     $("main").show();
     selectedCity = $(this).text();
     locationWeather(selectedCity);
-    storeHistory(selectedCity);
-    renderHistory();
   });
 
   // GIVEN a weather dashboard with form inputs

@@ -5,6 +5,11 @@
   text-align: center;
 }
 
+#selected-city{
+  display: inline;
+}
+
+
 /* icon images  */
 img {
   width: 50px;

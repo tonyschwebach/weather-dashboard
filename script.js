@@ -44,13 +44,13 @@ $(document).ready(function () {
       city +
       "&appid=" +
       apiKey;
-
+   
     $.ajax({
       url: queryURL,
       method: "GET",
     })
       .then(function (response) {
-        locationEl.append($("<h3>").text(response.name));
+        locationEl.append($("<h3>").text(response.name).addClass("d-inline"));
         let latitude = response.coord.lat;
         let longitude = response.coord.lon;
 
@@ -84,7 +84,8 @@ $(document).ready(function () {
       // set date
       let dateString = new Date(response.current.dt * 1000);
       dateString = dateString.toLocaleDateString();
-      let currentDate = $("<h3>").text("(" + dateString + ")");
+      let currentDate = $("<h3>").text(" (" + dateString + ") ");
+      currentDate.addClass("d-inline");
       locationEl.append(currentDate);
 
       //set icon
@@ -138,11 +139,13 @@ $(document).ready(function () {
       //create card for each day in the forecast
       for (let j = 1; j < 6; j++) {
         let card = $("<div>").addClass(
-          "card col-md-2 card-body bg-primary text-white"
+          "card col-md-2 bg-primary text-white"
         );
+        // forecast date
         let dateString = new Date(response.daily[j].dt * 1000);
         dateString = dateString.toLocaleDateString();
         let forecastDate = $("<h5>").text(dateString);
+        
         let forecastIcon = $("<img>").attr(
           "src",
           iconURL(response.daily[j].weather[0].icon)

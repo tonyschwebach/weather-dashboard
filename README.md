@@ -2,7 +2,7 @@
 
 ## Description
 
-Weather app to display current weather and 5 day forecast for user requested location. 
+Weather Dashboard is an app used to display current weather conditions and the 5 day forecast for a user requested location. 
 
 ---
 
@@ -26,14 +26,13 @@ URL for repository: [https://github.com/tonyschwebach/weather-dashboard](https:/
 ---
 
 ## Usage
-<!-- 
-Click the time block text box next to the hour time slot you would like to schedule an event or task. Type your notes and click the save icon on the right.
-The page will automatically color code the time slots based on your device's clock.
 
-![planner gif](/assets/demo.gif)
+Enter a city in the search box and click on the search icon to view the current weather and five day forecast for that city. You can quickly view weather for previously searched cities by simply clicking on that city on the left side of the page.
+
+![weather app gif](/assets/demo.gif)
 
 
-<img src="./assets/screencapture.png" width="640" alt="planner screenshot"/>)  -->
+
 
 ---
 

@@ -139,7 +139,7 @@ $(document).ready(function () {
       //create card for each day in the forecast
       for (let j = 1; j < 6; j++) {
         let card = $("<div>").addClass(
-          "card col-md-2 bg-primary text-white"
+          "card col-md-2 bg-primary text-white my-2"
         );
         // forecast date
         let dateString = new Date(response.daily[j].dt * 1000);

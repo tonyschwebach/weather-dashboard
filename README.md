@@ -42,6 +42,8 @@ Instructions from Georgia Tech Coding Bootcamp instructional staff.
 
 My classmates in the Georgia Tech full-time bootcamp.
 
+Data provided from Open Weather API.
+
 
 
 ---
